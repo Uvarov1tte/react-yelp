@@ -6,9 +6,10 @@
   "scripts": {
     "clean": "rimraf dist",
     "lint": "eslint .",
-    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "dev": "npm run client:build && concurrently \"npm run server:dev\" \"npm run client:dev\"",
     "client:dev": "vite",
-    "server:dev": "nodemon  server/app.cjs"
+    "server:dev": "nodemon  server/app.cjs",
+    "client:build": "vite build"
   },
   "dependencies": {
     "@mapbox/mapbox-sdk": "^0.16.1",

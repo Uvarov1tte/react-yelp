@@ -19,7 +19,9 @@ import Register from "./scenes/main/Users/Register.jsx";
 import Login from "./scenes/main/Users/Login.jsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+
 const router = createBrowserRouter([
+	
 	{
 		path: "/home",
 		element: <Home />,

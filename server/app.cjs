@@ -61,11 +61,9 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 // see the request body
 app.use(methodOverride('_method'))
-// app.use(express.static(path.join(__dirname, 'public')))
-app.use(express.static(path.join(__dirname, "..", "dist")));
-app.use((req, res, next) => {
-    res.sendFile(path.join(__dirname, "..", "build", "index.html"));
-});
+app.use(express.static(path.resolve(__dirname, "../dist")));
+// app.use(express.static(path.resolve(__dirname, "..")));
+// app.use(express.static("public"));
 //serving static assets
 app.use(mongoSanitize());
 // sanitize, doesnt allow keys that contain dollar sign or period.
@@ -73,12 +71,12 @@ app.use(mongoSanitize());
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     secret: 'thisshouldbeabettersecret!',
-    touchAfter:24*60*60
+    touchAfter: 24 * 60 * 60
 
 })
 
 store.on("error", function (e) {
-    console.lof("Session store error", e)
+    console.log("Session store error", e)
 })
 
 const sessionConfig = {
@@ -159,12 +157,62 @@ passport.deserializeUser(User.deserializeUser());
 
 //middleware for flash, BEFORE routers
 app.use((req, res, next) => {
-    console.log(req.query)
+    // console.log(req.query)
     res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 })
+
+const campgrounds =
+    [{
+        title: "Roaring Hollow",
+        image:
+            [
+                {
+                    url: "https://res.cloudinary.com/dutixedzl/image/upload/v1714556571/YelpCamp/p5z3zcpuaih0fkrhymfw.jpg",
+                    filename: "YelpCamp / tpsnvmlpzucljblo77iv",
+                },
+                {
+                    url: "https://res.cloudinary.com/dutixedzl/image/upload/v1714556571/YelpCamp/tpsnvmlpzucljblo77iv.jpg",
+                    filename: "YelpCamp/p5z3zcpuaih0fkrhymfw",
+                }
+            ],
+        geometry:
+        {
+            type: "Point",
+            coordinates: [-120.5058987, 46.6020711]
+        },
+        price: 26,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque vero illum assumenda optio corporis alias deleniti! Odio assumenda, voluptas ipsum minima veniam fugiat atque amet perspiciatis at debitis rerum nulla!",
+        location: "Yakima, Washington",
+        reviews: [],
+        __v: 0
+    },
+    {
+        title: "Roaring Hollow 2",
+        image:
+            [
+
+            ],
+        geometry:
+        {
+            type: "Point",
+            coordinates: [-120.5058987, 46.6020711]
+        },
+        price: 26,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque vero illum assumenda optio corporis alias deleniti! Odio assumenda, voluptas ipsum minima veniam fugiat atque amet perspiciatis at debitis rerum nulla!",
+        location: "Yakima, Washington",
+        reviews: [],
+        __v: 0
+    }]
+
+app.get('/api/campgrounds', (req, res) => {
+
+    // const parsedCampground = JSON.parse(campground)
+    res.send({ campgrounds });
+});
+
 
 /////////////////////////////
 // app.use('/', userRoutes)
@@ -177,6 +225,11 @@ app.use((req, res, next) => {
 //     res.render('home')
 // })
 // //////////////////////////////
+app.use('*', (req, res, next) => {
+    // res.sendFile(path.join(__dirname, "..", "dist", "index.html"));
+    res.sendFile(path.resolve(__dirname, "../dist", "index.html"));
+    // res.sendFile(path.resolve(__dirname, "..", "index.html"));
+});
 
 app.all('*', (req, res, next) => {
     // for every single requests
@@ -184,11 +237,11 @@ app.all('*', (req, res, next) => {
     // will only run if nothing else runs first
 })
 
-app.use((err, req, res, next) => {
+app.use('*', (err, req, res, next) => {
     const { statusCode = 500 } = err;
     if (!err.message) err.message = 'Oh no, something went wrong!'
     // res.status(statusCode).render('error', { err });
-    res.status(statusCode).send({err})
+    res.status(statusCode).send({ err })
 })
 
 
