@@ -16,7 +16,7 @@ export default function CampgroundCard({ campground }) {
                             <Card.Title>{campground.title}</Card.Title>
                             <Card.Text>{campground.description}</Card.Text>
                             <Card.Text><small className="text-muted">{campground.location}</small></Card.Text>
-                            <Button variant="primary">View {campground.title}</Button>
+                            <Button href={`/campgrounds/${campground.id}`} variant="primary">View {campground.title}</Button>
                         </Card.Body>
                     </Col>
                 </Row>

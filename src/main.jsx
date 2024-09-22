@@ -13,7 +13,9 @@ import Root from "./scenes/main/root.jsx";
 import CampgroundOutlet from "./scenes/main/campgrounds/CampgroundOutlet.jsx";
 import CampgroundIndex from "./scenes/main/campgrounds/CampgroundIndex.jsx";
 import CampgroundCreateNew from "./scenes/main/campgrounds/CampgroundCreateNew.jsx";
-import CampgroundShow from "./scenes/main/campgrounds/CampgroundShow.jsx";
+import CampgroundShow, {
+	loader as campgroundLoader,
+} from "./scenes/main/campgrounds/CampgroundShow.jsx";
 import CampgroundEdit from "./scenes/main/campgrounds/CampgroundEdit.jsx";
 import Register from "./scenes/main/Users/Register.jsx";
 import Login from "./scenes/main/Users/Login.jsx";
@@ -21,7 +23,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const router = createBrowserRouter([
-	
+
 	{
 		path: "/home",
 		element: <Home />,
@@ -49,6 +51,7 @@ const router = createBrowserRouter([
 							},
 							{
 								path: ":id",
+								loader: campgroundLoader,
 								element: <CampgroundShow />,
 								children: [
 									{
@@ -66,7 +69,7 @@ const router = createBrowserRouter([
 										]
 									},
 									{
-										path: ":edit",
+										path: "edit",
 										element: <CampgroundEdit />
 									},
 									{
@@ -91,7 +94,7 @@ const router = createBrowserRouter([
 						element: <div>logout, redirect.</div>
 					}
 				]
-			}	
+			}
 		]
 	},
 

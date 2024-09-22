@@ -15,5 +15,10 @@ Currently, two official plugins are available:
 ### DONE:
 - Set up connection from express to react
 - Set up the first working data fetch, from server (not including database)
-### TO DO NEXT:
 - Fetch data from database
+- Disabled users on campgrounds
+
+### TO DO NEXT:
+- Implement users and reviews
+- Divide some chunky components into smaller ones (CampgroundShow)
+- Fix flash and errors

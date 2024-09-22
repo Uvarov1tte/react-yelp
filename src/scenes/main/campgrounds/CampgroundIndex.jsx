@@ -17,7 +17,7 @@ export default function CampgroundIndex() {
             {
                 campgroundList.map((campground, i) => {
                     return (
-                        <CampgroundCard key={i} campground={campground} />
+                        <CampgroundCard key={campground.id} campground={campground} />
                     )
                 })
             }

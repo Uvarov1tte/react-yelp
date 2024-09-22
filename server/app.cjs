@@ -4,7 +4,8 @@ if (process.env.NODE_ENV !== "production") {
 //environment variable
 //means if we running in development mode (not production), require dotenv package
 
-
+const cors = require('cors');
+//probably only development, fix later
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -30,7 +31,7 @@ const userRoutes = require('./routes/users.cjs')
 const campgroundRoutes = require('./routes/campgrounds.cjs');
 const reviewRoutes = require('./routes/reviews.cjs');
 // const dbUrl = process.env.DB_URL
-const dbUrl = 'mongodb://localhost:27017/yelp-camp'
+const dbUrl = 'mongodb://localhost:27017/yelp-camp-react'
 
 
 mongoose.connect(dbUrl);
@@ -58,6 +59,7 @@ const app = express();
 // app.set('views', path.join(__dirname, 'views'));
 //*** */
 
+app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 // see the request body
 app.use(methodOverride('_method'))
@@ -156,7 +158,7 @@ passport.deserializeUser(User.deserializeUser());
 
 
 //middleware for flash, BEFORE routers
-app.use((req, res, next) => {
+app.use("*", (req, res, next) => {
     // console.log(req.query)
     res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
@@ -207,16 +209,16 @@ const campgrounds =
         __v: 0
     }]
 
-app.get('/api/campgrounds', (req, res) => {
+// app.get('/api/campgrounds', (req, res) => {
 
-    // const parsedCampground = JSON.parse(campground)
-    res.send({ campgrounds });
-});
+//     // const parsedCampground = JSON.parse(campground)
+//     // res.send({ campgrounds });
+// });
 
 
 /////////////////////////////
 // app.use('/', userRoutes)
-// app.use('/campgrounds', campgroundRoutes)
+app.use('/api/campgrounds', campgroundRoutes)
 // app.use('/campgrounds/:id/reviews', reviewRoutes)
 // //theres :id in the route, but we wont have access to id by default -> merge params:true (see headers (?) in routes->reviews)
 

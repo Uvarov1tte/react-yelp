@@ -7,7 +7,8 @@ const { cloudinary } = require("../cloudinary/index.cjs");
 
 module.exports.index = async (req, res) => {
     const campgrounds = await Campground.find({});
-    res.render('campgrounds/index', { campgrounds })
+    // res.render('campgrounds/index', { campgrounds })
+    res.send({ campgrounds });
 }
 
 module.exports.renderNewForm = (req, res) => {
@@ -43,10 +44,11 @@ module.exports.showCampground = async (req, res) => {
     //populate camp author AND review AND the reviews author
     // console.log(campground)
     if (!campground) {
-        req.flash('error', 'Cannot find that campground!');
-        return res.redirect('/campground')
+        // req.flash('error', 'Cannot find that campground!');
+        return res.redirect('/campgrounds')
     }
-    res.render('campgrounds/show', { campground })
+    // res.render('campgrounds/show', { campground })
+    res.send({ campground })
 }
 
 module.exports.renderEditForm = async (req, res) => {

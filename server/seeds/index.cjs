@@ -14,17 +14,30 @@ db.once('open', () => {
 
 const sample = (array) => array[Math.floor(Math.random() * array.length)];
 
+const imageSample = [
+    "https://res.cloudinary.com/dutixedzl/image/upload/v1727016003/Yelp-Camp-React/kerensa-pickett-LKQGNBZAWU8-unsplash_dlmxrp.jpg",
+    "https://res.cloudinary.com/dutixedzl/image/upload/v1727016093/Yelp-Camp-React/karl-hedin-TqzpsSqyy4I-unsplash_qrpuh5.jpg",
+    "https://res.cloudinary.com/dutixedzl/image/upload/v1727016001/Yelp-Camp-React/julian-bialowas-ilkTnuMunP8-unsplash_ufvrxl.jpg",
+    "https://res.cloudinary.com/dutixedzl/image/upload/v1727015999/Yelp-Camp-React/fabian-moller-sGReLsWGfC0-unsplash_tj1vxy.jpg",
+    "https://res.cloudinary.com/dutixedzl/image/upload/v1727015839/Yelp-Camp-React/2.another_tree_vzalsq.png"
+]
+
 const seedDB = async () => {
     await Campground.deleteMany({})
     // const c = new Campground({ title: 'purple field' });
     // await c.save();
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < 50; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
         // temp price
         const price = Math.floor(Math.random() * 20) + 10
+        const randomImage1 = Math.floor(Math.random() * 5)
+        let randomImage2 = Math.floor(Math.random() * 5)
+        while (randomImage1 == randomImage2) {
+            randomImage2 = Math.floor(Math.random() * 5)
+        }
         const camp = new Campground({
             // YOUR USER ID
-            author: '6614fd296484998d2b1ad626',
+            // author: '6614fd296484998d2b1ad626',
             title: `${sample(descriptors)} ${sample(places)}`,
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             // random location
@@ -39,12 +52,12 @@ const seedDB = async () => {
             },
             image: [
                 {
-                    url: 'https://res.cloudinary.com/dutixedzl/image/upload/v1714556571/YelpCamp/tpsnvmlpzucljblo77iv.jpg',
-                    filename: 'YelpCamp/tpsnvmlpzucljblo77iv',
+                    url: imageSample[randomImage1],
+                    filename: 'YelpCamp/p5z3zcpuaih0fkrhymfw',
                 },
                 {
-                    url: 'https://res.cloudinary.com/dutixedzl/image/upload/v1714556571/YelpCamp/p5z3zcpuaih0fkrhymfw.jpg',
-                    filename: 'YelpCamp/p5z3zcpuaih0fkrhymfw',
+                    url: imageSample[randomImage2],
+                    filename: 'YelpCamp/tpsnvmlpzucljblo77iv',
                 }
             ]
         })
