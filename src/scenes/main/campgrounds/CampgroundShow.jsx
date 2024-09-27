@@ -1,4 +1,5 @@
-import { Card, Carousel, Col, ListGroup, Row } from "react-bootstrap"
+/* eslint-disable react-refresh/only-export-components */
+import { Button, Card, Carousel, Col, ListGroup, Row } from "react-bootstrap"
 import { useLoaderData, useParams } from "react-router-dom"
 import { useState, useEffect } from "react";
 
@@ -55,9 +56,15 @@ export default function CampgroundShow() {
                         <ListGroup variant="flush">
                             <ListGroup.Item>{campground.location}</ListGroup.Item>
                             {/* <ListGroup.Item>Submitted by {campground.author.username}</ListGroup.Item> */}
-                            <ListGroup.Item>{campground.price}/ night</ListGroup.Item>
+                            <ListGroup.Item>${campground.price} / night</ListGroup.Item>
                         </ListGroup>
                         <Card.Footer className="text-muted"> 2 days ago</Card.Footer>
+                        <Card.Body>
+                            <Button variant="info" href={`/campgrounds/${campground.id}/edit`}>Edit</Button>
+                            <form className="d-inline" action={`/campgrounds/${campground.id}?_method=DELETE`} method="POST">
+                                <button className="btn btn-danger">Delete</button>
+                            </form>
+                        </Card.Body>
                     </Card>
                 </Col>
                 <Col>

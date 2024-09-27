@@ -1,3 +1,5 @@
+const bodyParser = require('body-parser');
+
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
@@ -32,6 +34,7 @@ const campgroundRoutes = require('./routes/campgrounds.cjs');
 const reviewRoutes = require('./routes/reviews.cjs');
 // const dbUrl = process.env.DB_URL
 const dbUrl = 'mongodb://localhost:27017/yelp-camp-react'
+const multer = require('multer')
 
 
 mongoose.connect(dbUrl);
@@ -58,10 +61,17 @@ const app = express();
 // app.set('view engine', 'ejs');
 // app.set('views', path.join(__dirname, 'views'));
 //*** */
+// app.use(function (req, res, next) {
+//    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // "*"
+//    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//    next();
+// });
 
 app.use(cors())
+app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 // see the request body
+app.use(bodyParser.json())
 app.use(methodOverride('_method'))
 app.use(express.static(path.resolve(__dirname, "../dist")));
 // app.use(express.static(path.resolve(__dirname, "..")));

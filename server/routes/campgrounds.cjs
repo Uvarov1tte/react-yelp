@@ -6,6 +6,7 @@ const { isLoggedIn, isAuthor, validateCampground } = require('../middleware.cjs'
 const multer = require('multer');
 const { storage } = require('../cloudinary/index.cjs');
 const upload = multer({ storage });
+//add multer config
 
 
 //middleware validate&isauthor
@@ -15,7 +16,8 @@ const upload = multer({ storage });
 
 router.route('/')
     .get(catchAsync(campgrounds.index))
-    .post(isLoggedIn, upload.array('image'), validateCampground, catchAsync(campgrounds.createCampground))
+    // .post(isLoggedIn, upload.array('image'), validateCampground, catchAsync(campgrounds.createCampground))
+    .post(upload.array('image'), catchAsync(campgrounds.createCampground))
 // show a list of campgrounds
 
 router.get('/new', isLoggedIn, campgrounds.renderNewForm)

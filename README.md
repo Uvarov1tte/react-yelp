@@ -17,8 +17,11 @@ Currently, two official plugins are available:
 - Set up the first working data fetch, from server (not including database)
 - Fetch data from database
 - Disabled users on campgrounds
+- Handle POST requests
 
 ### TO DO NEXT:
+- Fix redirecting issues
+- Implement CRUD on campgrounds
 - Implement users and reviews
 - Divide some chunky components into smaller ones (CampgroundShow)
 - Fix flash and errors

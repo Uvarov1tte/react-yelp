@@ -12,7 +12,9 @@ import Home from "./scenes/home/home.jsx";
 import Root from "./scenes/main/root.jsx";
 import CampgroundOutlet from "./scenes/main/campgrounds/CampgroundOutlet.jsx";
 import CampgroundIndex from "./scenes/main/campgrounds/CampgroundIndex.jsx";
-import CampgroundCreateNew from "./scenes/main/campgrounds/CampgroundCreateNew.jsx";
+import CampgroundCreateNew, {
+	action as campgroundCreateNewAction
+} from "./scenes/main/campgrounds/CampgroundCreateNew.jsx";
 import CampgroundShow, {
 	loader as campgroundLoader,
 } from "./scenes/main/campgrounds/CampgroundShow.jsx";
@@ -47,6 +49,7 @@ const router = createBrowserRouter([
 							},
 							{
 								path: "new",
+								action: campgroundCreateNewAction,
 								element: <CampgroundCreateNew />,
 							},
 							{

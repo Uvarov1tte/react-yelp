@@ -12,7 +12,7 @@ export default function CampgroundIndex() {
 
     return (
         <>
-            <div>All campgrounds</div>
+            <h1>All campgrounds</h1>
             {/* <div>{response.description}</div> */}
             {
                 campgroundList.map((campground, i) => {

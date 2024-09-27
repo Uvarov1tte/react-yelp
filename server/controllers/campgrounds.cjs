@@ -12,25 +12,32 @@ module.exports.index = async (req, res) => {
 }
 
 module.exports.renderNewForm = (req, res) => {
-    res.render('campgrounds/new');
+    res.redirect('campgrounds/new');
 }
 
 module.exports.createCampground = async (req, res, next) => {
+    console.log(req.body)
+    console.log(req.files)
+    const reqBody = JSON.stringify(req.body)
+    const reqBodyObj = JSON.parse(reqBody)
+    console.log(reqBodyObj)
     const geoData = await geocoder.forwardGeocode({
-        query: req.body.campground.location,
+        query: reqBodyObj.location,
         limit: 1
     }).send()
+    // console.log(geoData)
     // res.send(req.body.campground);
     // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400); 
     // see if the request body actually contain campground but wont need for now
-    const campground = new Campground(req.body.campground);
+    const campground = new Campground(reqBodyObj);
     campground.geometry = geoData.body.features[0].geometry;
     campground.image = req.files.map(f => ({ url: f.path, filename: f.filename }));
+    console.log(campground)
     //map files from request, according to path and filename
-    campground.author = req.user._id;
+    // campground.author = req.user._id;
     await campground.save();
-    console.log(campground);
-    req.flash('success', 'Successfully made a new campground!');
+    // console.log(campground);
+    // req.flash('success', 'Successfully made a new campground!');
     res.redirect(`/campgrounds/${campground._id}`)
 }
 
