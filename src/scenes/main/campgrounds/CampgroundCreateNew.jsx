@@ -1,6 +1,6 @@
 import { Col, Form, Row, InputGroup, Button } from "react-bootstrap";
 import { Form as RRForm } from "react-router-dom";
-import { useState } from "react";
+import { useState, useHistory } from "react";
 import axios from "axios";
 // import { createCampground } from "../../../../server/controllers/campgrounds.cjs";
 
@@ -17,6 +17,7 @@ export async function action(request, params) {
 
 export default function CampgroundCreateNew() {
     const [validated, setValidated] = useState(false);
+    const [campground, setCampground] = useState([]);
 
     const [title, setTitle] = useState('');
     const [location, setLocation] = useState('');
@@ -24,7 +25,11 @@ export default function CampgroundCreateNew() {
     const [price, setPrice] = useState(0);
     const [description, setDescription] = useState('');
 
+    const history = useHistory();
+
     const handleSubmit = async (event) => {
+        // console.log(event.target.formData())
+
         const form = event.currentTarget;
         event.preventDefault();
         if (form.checkValidity() === false) {
@@ -33,6 +38,7 @@ export default function CampgroundCreateNew() {
         const formData = new FormData()
         formData.append('title', title);
         formData.append('location', location);
+        // formData.append('image', image);
         for (let i = 0; i < image.length; i++) {
             formData.append('image', image[i])
         }
@@ -42,15 +48,29 @@ export default function CampgroundCreateNew() {
             console.log(pair[0], pair[1]);
         }
         const config = { headers: { 'Content-Type': 'multipart/form-data' } }
-        try {
-            const data = await axios.post('http://localhost:3000/api/campgrounds', formData, config)
-            console.log(data);
-        }
-        catch (err) {
-            console.log(err);
-        }
+
+        // try {
+        //     const data = await axios.post('http://localhost:3000/api/campgrounds', formData, config)
+        //     console.log(data);
+        // }
+        // catch (err) {
+        //     console.log(err);
+        // }
+        const response = await fetch("http://localhost:3000/api/campgrounds", {
+            method: "POST",
+            body: formData,
+        })
+            .then(res => res.json())
+            .then(campgroundData => setCampground(campgroundData.campground));;
+
+        // const fetchInfo = () => {
+        //     fetch("http://localhost:3000/api/campgrounds")
+        //         .then(res => res.json())
+        //         .then(campgroundData => setCampground(campgroundData.campground));
+        // }
+        history.push(`/campgrounds/${campground._id}`)
     };
-    
+
     return (
         <>
             <Row className="mt-4">
@@ -63,7 +83,7 @@ export default function CampgroundCreateNew() {
                         onSubmit={handleSubmit}
                         noValidate
                         encType={"multipart/form-data"}
-                        // onChange={handleChange}
+                    // onChange={handleChange}
                     >
                         <Form.Group className="mb-3">
                             <Form.Label htmlFor="title">Title</Form.Label>
@@ -93,7 +113,7 @@ export default function CampgroundCreateNew() {
                                 type="file"
                                 id="image"
                                 name={"campground[image]"}
-                                onChange={(e) => { console.log(e.target.files) || setImage(e.target.files) }}
+                                onChange={(e) => { setImage(e.target.files) }}
                                 multiple
                                 required />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -111,10 +131,10 @@ export default function CampgroundCreateNew() {
                                     aria-describedby="price-label"
                                     name={"campground[price]"}
                                     onChange={(e) => { setPrice(e.target.value) }}
-                                    required 
+                                    required
                                 />
                                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                            </InputGroup> 
+                            </InputGroup>
                         </Form.Group>
 
                         <Form.Group>

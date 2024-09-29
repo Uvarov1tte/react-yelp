@@ -16,8 +16,8 @@ module.exports.renderNewForm = (req, res) => {
 }
 
 module.exports.createCampground = async (req, res, next) => {
-    console.log(req.body)
-    console.log(req.files)
+    // console.log(req.body)
+    // console.log(req.files)
     const reqBody = JSON.stringify(req.body)
     const reqBodyObj = JSON.parse(reqBody)
     console.log(reqBodyObj)
@@ -25,20 +25,13 @@ module.exports.createCampground = async (req, res, next) => {
         query: reqBodyObj.location,
         limit: 1
     }).send()
-    // console.log(geoData)
-    // res.send(req.body.campground);
-    // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400); 
-    // see if the request body actually contain campground but wont need for now
     const campground = new Campground(reqBodyObj);
     campground.geometry = geoData.body.features[0].geometry;
     campground.image = req.files.map(f => ({ url: f.path, filename: f.filename }));
     console.log(campground)
-    //map files from request, according to path and filename
-    // campground.author = req.user._id;
     await campground.save();
     // console.log(campground);
-    // req.flash('success', 'Successfully made a new campground!');
-    res.redirect(`/campgrounds/${campground._id}`)
+    res.send({ campground });
 }
 
 module.exports.showCampground = async (req, res) => {
