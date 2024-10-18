@@ -25,3 +25,4 @@ Currently, two official plugins are available:
 - Implement users and reviews
 - Divide some chunky components into smaller ones (CampgroundShow)
 - Fix flash and errors
+- etc
